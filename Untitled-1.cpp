@@ -1,29 +1,40 @@
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <limits>
 
 using namespace std;
 
+
 int main()
 {
+    string expression; 
     double num1, num2, result;
     char operation;
-    char choice;
     
-    cout << "C++ calculator" << endl;
+    cout << "First App - C++ calculator" << endl;
     
-    do {
-        cout << "Enter two numbers: ";
-        cin >> num1 >> num2;
+    do{
+        cout << "Enter an expression, e.g. (5+5): ";
+        getline(cin, expression);
         
-        cout << "Choose an operation (+, -, *, /): ";
-        cin >> operation;
+        stringstream ss(expression);
         
         
-        switch (operation) {
+        if(!(ss >> num1 >> operation >> num2)){
+            cout << "Invalid input. Please use a valid expression with two numbers and an operator." << endl;
+            continue;
+        }
+        
+        if(operation != '+' && operation != '-' && operation != '*' && operation != '/'){
+            cout << "Invalid operation. Please enter a valid operation with two numbers and an operator." << endl;
+            continue;
+        }
+        switch(operation){
             case '+':
                 result = num1 + num2;
                 cout << "Result: " << result << endl;
                 break;
-                
             case '-':
                 result = num1 - num2;
                 cout << "Result: " << result << endl;
@@ -32,7 +43,6 @@ int main()
                 result = num1 * num2;
                 cout << "Result: " << result << endl;
                 break;
-            
             case '/':
                 if(num2 != 0){
                     result = num1 / num2;
@@ -41,15 +51,19 @@ int main()
                     cout << "Error: Division by zero is not allowed." << endl;
                 }
                 break;
-                
-            default:
-                cout << "Invalid operation. Please choose +, -, * or /." << endl;
         }
+            cout << "Do you want to make another operation? (y/n)";
+            char choice;
+            cin >> choice;
+            
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            
+            if(choice != 'y' && choice != 'Y'){
+                cout << "Goodbye" << endl;
+                break;
+            }
         
-        cout << "Do you want to perform another calculation ? (y/n)";
-        cin >> choice;
-        
-    } while (choice == 'y' || choice == 'Y');
-
+    } while(true);
+    
     return 0;
 }
